@@ -1,0 +1,10 @@
+C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Domain\Inventory\StockItem.cs(40,39): error CS7036: Parmi les arguments spécifiés, aucun ne correspond au paramètre obligatoire 'type' de 'Error.Error(string, string, ErrorType)' [C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Domain\Tyrex.Domain.csproj]
+C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Domain\Inventory\StockItem.cs(51,39): error CS7036: Parmi les arguments spécifiés, aucun ne correspond au paramètre obligatoire 'type' de 'Error.Error(string, string, ErrorType)' [C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Domain\Tyrex.Domain.csproj]
+C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Domain\Inventory\StockItem.cs(56,39): error CS7036: Parmi les arguments spécifiés, aucun ne correspond au paramètre obligatoire 'type' de 'Error.Error(string, string, ErrorType)' [C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Domain\Tyrex.Domain.csproj]
+C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Domain\Workshop\RepairOrder.cs(53,39): error CS7036: Parmi les arguments spécifiés, aucun ne correspond au paramètre obligatoire 'type' de 'Error.Error(string, string, ErrorType)' [C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Domain\Tyrex.Domain.csproj]
+
+ÉCHEC de la build.
+    0 Avertissement(s)
+    4 Erreur(s)
+
+Temps écoulé 00:00:01.67

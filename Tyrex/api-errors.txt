@@ -1,0 +1,9 @@
+﻿C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Api\Program.cs(9,18): error CS1061: 'IServiceCollection' ne contient pas de d├®finition pour 'AddSwaggerGen' et aucune m├®thode d'extension accessible 'AddSwaggerGen' acceptant un premier argument de type 'IServiceCollection' n'a ├®t├® trouv├®e (une directive using ou une r├®f├®rence d'assembly est-elle manquante┬á?) [C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Api\Tyrex.Api.csproj]
+C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Api\Program.cs(22,9): error CS1061: 'WebApplication' ne contient pas de d├®finition pour 'UseSwagger' et aucune m├®thode d'extension accessible 'UseSwagger' acceptant un premier argument de type 'WebApplication' n'a ├®t├® trouv├®e (une directive using ou une r├®f├®rence d'assembly est-elle manquante┬á?) [C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Api\Tyrex.Api.csproj]
+C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Api\Program.cs(23,9): error CS1061: 'WebApplication' ne contient pas de d├®finition pour 'UseSwaggerUI' et aucune m├®thode d'extension accessible 'UseSwaggerUI' acceptant un premier argument de type 'WebApplication' n'a ├®t├® trouv├®e (une directive using ou une r├®f├®rence d'assembly est-elle manquante┬á?) [C:\Users\moham\Music\Bosch\Tyrex\src\Tyrex.Api\Tyrex.Api.csproj]
+
+├ëCHEC de la build.
+    0 Avertissement(s)
+    3 Erreur(s)
+
+Temps ├®coul├® 00:00:02.43
