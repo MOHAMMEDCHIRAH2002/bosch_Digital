@@ -1,4 +1,4 @@
-# Copilot Handoff Prompt — TYREX MVP Continuation
+# Claud Handoff Prompt — TYREX MVP Continuation
 
 Use this prompt as the operating brief for continuing the current TYREX project.
 
