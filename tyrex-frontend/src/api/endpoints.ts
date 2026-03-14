@@ -9,17 +9,22 @@ export const dashboardApi = {
 // --- Customers ---
 export const customersApi = {
     create: (data: any) => apiClient.post('/customers', data),
-    getAll: () => apiClient.get('/customers'),
+    getAll: (params?: { searchTerm?: string; page?: number; pageSize?: number }) =>
+        apiClient.get('/customers', { params }),
 };
 
 // --- Vehicles ---
 export const vehiclesApi = {
     create: (data: any) => apiClient.post('/vehicles', data),
+    getAll: (params?: { customerId?: string; searchTerm?: string; page?: number; pageSize?: number }) =>
+        apiClient.get('/vehicles', { params }),
 };
 
 // --- Repair Orders ---
 export const repairOrdersApi = {
     create: (data: any) => apiClient.post('/repair-orders', data),
+    getAll: (params?: { status?: string; searchTerm?: string; page?: number; pageSize?: number }) =>
+        apiClient.get('/repair-orders', { params }),
 };
 
 // --- Diagnostics ---

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tyrex.Application.Fleet.Commands.CreateVehicle;
+using Tyrex.Application.Fleet.Queries.GetVehicles;
 
 namespace Tyrex.Api.Controllers;
 
@@ -17,6 +18,25 @@ public class VehiclesController : ControllerBase
         _sender = sender;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetVehicles(
+        [FromQuery] Guid? customerId,
+        [FromQuery] string? searchTerm,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetVehiclesQuery(customerId, searchTerm, page, pageSize);
+        var result = await _sender.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return BadRequest(result.Error);
+        }
+
+        return Ok(result.Value);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateVehicle([FromBody] CreateVehicleCommand command, CancellationToken cancellationToken)
     {
@@ -27,6 +47,6 @@ public class VehiclesController : ControllerBase
             return BadRequest(result.Error);
         }
 
-        return CreatedAtAction(nameof(CreateVehicle), new { id = result.Value }, result.Value);
+        return CreatedAtAction(nameof(GetVehicles), new { id = result.Value }, result.Value);
     }
 }

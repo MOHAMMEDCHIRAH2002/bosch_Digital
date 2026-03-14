@@ -2,6 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tyrex.Application.Workshop.Commands.CreateRepairOrder;
+using Tyrex.Application.Workshop.Queries.GetRepairOrders;
+using Tyrex.Domain.Workshop;
 
 namespace Tyrex.Api.Controllers;
 
@@ -17,6 +19,25 @@ public class RepairOrdersController : ControllerBase
         _sender = sender;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetRepairOrders(
+        [FromQuery] RepairOrderStatus? status,
+        [FromQuery] string? searchTerm,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetRepairOrdersQuery(status, searchTerm, page, pageSize);
+        var result = await _sender.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return BadRequest(result.Error);
+        }
+
+        return Ok(result.Value);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateRepairOrder([FromBody] CreateRepairOrderCommand command, CancellationToken cancellationToken)
     {
@@ -27,6 +48,6 @@ public class RepairOrdersController : ControllerBase
             return BadRequest(result.Error);
         }
 
-        return CreatedAtAction(nameof(CreateRepairOrder), new { id = result.Value }, result.Value);
+        return CreatedAtAction(nameof(GetRepairOrders), new { id = result.Value }, result.Value);
     }
 }

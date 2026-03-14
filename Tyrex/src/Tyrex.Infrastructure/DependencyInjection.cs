@@ -25,9 +25,10 @@ public static class DependencyInjection
 
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
-            // For MVP/E2E testing, use SQLite if we want to ensure it works locally
-            options.UseSqlite("Data Source=Tyrex.db");
-            
+            // For MVP/E2E testing, use SQLite with absolute path
+            var dbPath = Path.Combine(AppContext.BaseDirectory, "Tyrex.db");
+            options.UseSqlite($"Data Source={dbPath}");
+
             options.AddInterceptors(
                 sp.GetRequiredService<AuditableEntityInterceptor>(),
                 sp.GetRequiredService<SoftDeletableEntityInterceptor>());

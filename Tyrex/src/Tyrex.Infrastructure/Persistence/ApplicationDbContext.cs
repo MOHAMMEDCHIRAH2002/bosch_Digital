@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Tyrex.Infrastructure.Persistence.Interceptors;
+using Tyrex.Infrastructure.Persistence.Seeding;
 using Tyrex.SharedKernel.Primitives;
 
 using Tyrex.Application.Interfaces;
@@ -24,17 +25,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext, IUnitOfWor
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        
-        // Seed initial admin user
-        modelBuilder.Entity<Tyrex.Domain.Identity.User>().HasData(new
-        {
-            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-            Email = "admin@tyrex.com",
-            PasswordHash = "admin123", // MVP: simple cleartext for now
-            FirstName = "Admin",
-            LastName = "Tyrex",
-            Role = Tyrex.Domain.Identity.Role.Admin
-        });
+
+        // Apply seed data
+        modelBuilder.ApplySeedData();
 
         base.OnModelCreating(modelBuilder);
     }
@@ -44,7 +37,12 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext, IUnitOfWor
         optionsBuilder.AddInterceptors(
             _auditableEntityInterceptor,
             _softDeletableEntityInterceptor);
-        
+
         base.OnConfiguring(optionsBuilder);
+    }
+
+    public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return await base.SaveChangesAsync(cancellationToken);
     }
 }

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tyrex.Application.CRM.Commands.CreateCustomer;
+using Tyrex.Application.CRM.Queries.GetCustomers;
 
 namespace Tyrex.Api.Controllers;
 
@@ -17,16 +18,34 @@ public class CustomersController : ControllerBase
         _sender = sender;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerCommand command, CancellationToken cancellationToken)
+    [HttpGet]
+    public async Task<IActionResult> GetCustomers(
+        [FromQuery] string? searchTerm,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken cancellationToken = default)
     {
-        var result = await _sender.Send(command, cancellationToken);
-        
+        var query = new GetCustomersQuery(searchTerm, page, pageSize);
+        var result = await _sender.Send(query, cancellationToken);
+
         if (result.IsFailure)
         {
             return BadRequest(result.Error);
         }
 
-        return CreatedAtAction(nameof(CreateCustomer), new { id = result.Value }, result.Value);
+        return Ok(result.Value);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerCommand command, CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return BadRequest(result.Error);
+        }
+
+        return CreatedAtAction(nameof(GetCustomers), new { id = result.Value }, result.Value);
     }
 }
