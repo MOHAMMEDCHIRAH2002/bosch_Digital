@@ -44,7 +44,8 @@ internal sealed class GetDashboardKpisQueryHandler : IQueryHandler<GetDashboardK
 
         // 4. Today's Revenue (Sum of payments made today)
         var today = _dateTimeProvider.UtcNow.Date;
-        var todayRevenue = await _context.Set<Payment>()
+        var todayRevenue = await _context.Set<Invoice>()
+            .SelectMany(i => i.Payments)
             .Where(p => p.PaymentDate >= today && p.PaymentDate < today.AddDays(1))
             .SumAsync(p => p.Amount, cancellationToken);
 
