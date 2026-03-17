@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tyrex.Application.Fleet.Commands.CreateVehicle;
+using Tyrex.Application.Fleet.Queries.GetVehicleById;
 using Tyrex.Application.Fleet.Queries.GetVehicles;
 
 namespace Tyrex.Api.Controllers;
@@ -32,6 +33,20 @@ public class VehiclesController : ControllerBase
         if (result.IsFailure)
         {
             return BadRequest(result.Error);
+        }
+
+        return Ok(result.Value);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetVehicleById(Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetVehicleByIdQuery(id);
+        var result = await _sender.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Code == "Vehicle.NotFound" ? NotFound(result.Error) : BadRequest(result.Error);
         }
 
         return Ok(result.Value);

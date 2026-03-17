@@ -118,7 +118,7 @@ public class EndToEndWorkflowTests : BaseIntegrationTest
         Assert.Equal(HttpStatusCode.OK, refuseResponse.StatusCode);
 
         // Step 7: Verify status changed
-        var repairOrderResponse = await Client.GetAsync($"/api/repair-orders/{repairOrderId}");
+        var repairOrderResponse = await Client.GetAsync($"/api/repairorders/{repairOrderId}");
         // Note: Individual GET endpoint may need to be added
     }
 
@@ -233,7 +233,7 @@ public class EndToEndWorkflowTests : BaseIntegrationTest
             mileage = 50000
         };
 
-        var response = await Client.PostAsJsonAsync("/api/repair-orders", request);
+        var response = await Client.PostAsJsonAsync("/api/repairorders", request);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         return await response.Content.ReadFromJsonAsync<Guid>();
     }
@@ -250,7 +250,7 @@ public class EndToEndWorkflowTests : BaseIntegrationTest
             }
         };
 
-        var response = await Client.PostAsJsonAsync($"/api/repair-orders/{repairOrderId}/diagnostics", request);
+        var response = await Client.PostAsJsonAsync($"/api/repairorders/{repairOrderId}/diagnostics", request);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
@@ -300,7 +300,7 @@ public class EndToEndWorkflowTests : BaseIntegrationTest
             }
         };
 
-        var response = await Client.PostAsJsonAsync($"/api/repair-orders/{repairOrderId}/quality/submit", request);
+        var response = await Client.PostAsJsonAsync($"/api/repairorders/{repairOrderId}/quality/submit", request);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 

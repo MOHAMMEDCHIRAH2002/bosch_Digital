@@ -7,7 +7,7 @@ public sealed class RepairOrder : AggregateRoot, IAuditableEntity
 {
     private readonly List<string> _intakePhotoUrls = new();
 
-    private RepairOrder(Guid id, string orderNumber, Guid customerId, Guid vehicleId, RepairOrderType type, string visitReason)
+    private RepairOrder(Guid id, string orderNumber, Guid customerId, Guid vehicleId, RepairOrderType type, string visitReason, int? intakeMileage = null)
         : base(id)
     {
         OrderNumber = orderNumber;
@@ -15,6 +15,7 @@ public sealed class RepairOrder : AggregateRoot, IAuditableEntity
         VehicleId = vehicleId;
         Type = type;
         VisitReason = visitReason;
+        IntakeMileage = intakeMileage;
         Status = RepairOrderStatus.Draft;
     }
 
@@ -27,6 +28,7 @@ public sealed class RepairOrder : AggregateRoot, IAuditableEntity
     public Guid VehicleId { get; private set; }
     public RepairOrderType Type { get; private set; }
     public string VisitReason { get; private set; } = string.Empty;
+    public int? IntakeMileage { get; private set; }
     public RepairOrderStatus Status { get; private set; }
     public IReadOnlyCollection<string> IntakePhotoUrls => _intakePhotoUrls.AsReadOnly();
 
@@ -35,9 +37,9 @@ public sealed class RepairOrder : AggregateRoot, IAuditableEntity
     public DateTime? ModifiedOnUtc { get; set; }
     public string? ModifiedBy { get; set; }
 
-    public static RepairOrder Create(string orderNumber, Guid customerId, Guid vehicleId, RepairOrderType type, string visitReason)
+    public static RepairOrder Create(string orderNumber, Guid customerId, Guid vehicleId, RepairOrderType type, string visitReason, int? intakeMileage = null)
     {
-        return new RepairOrder(Guid.NewGuid(), orderNumber, customerId, vehicleId, type, visitReason);
+        return new RepairOrder(Guid.NewGuid(), orderNumber, customerId, vehicleId, type, visitReason, intakeMileage);
     }
 
     public void AddIntakePhoto(string photoUrl)

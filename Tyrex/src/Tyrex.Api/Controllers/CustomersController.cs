@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tyrex.Application.CRM.Commands.CreateCustomer;
+using Tyrex.Application.CRM.Queries.GetCustomerById;
 using Tyrex.Application.CRM.Queries.GetCustomers;
 
 namespace Tyrex.Api.Controllers;
@@ -31,6 +32,20 @@ public class CustomersController : ControllerBase
         if (result.IsFailure)
         {
             return BadRequest(result.Error);
+        }
+
+        return Ok(result.Value);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetCustomerById(Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetCustomerByIdQuery(id);
+        var result = await _sender.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Code == "Customer.NotFound" ? NotFound(result.Error) : BadRequest(result.Error);
         }
 
         return Ok(result.Value);

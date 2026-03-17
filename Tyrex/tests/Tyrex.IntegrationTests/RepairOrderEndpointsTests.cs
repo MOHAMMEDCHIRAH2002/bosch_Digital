@@ -66,7 +66,7 @@ public class RepairOrderEndpointsTests : BaseIntegrationTest
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/repair-orders", request);
+        var response = await Client.PostAsJsonAsync("/api/repairorders", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -88,7 +88,7 @@ public class RepairOrderEndpointsTests : BaseIntegrationTest
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/repair-orders", request);
+        var response = await Client.PostAsJsonAsync("/api/repairorders", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -108,7 +108,7 @@ public class RepairOrderEndpointsTests : BaseIntegrationTest
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/repair-orders", request);
+        var response = await Client.PostAsJsonAsync("/api/repairorders", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -133,7 +133,7 @@ public class RepairOrderEndpointsTests : BaseIntegrationTest
             };
 
             // Act
-            var response = await Client.PostAsJsonAsync("/api/repair-orders", request);
+            var response = await Client.PostAsJsonAsync("/api/repairorders", request);
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -152,10 +152,10 @@ public class RepairOrderEndpointsTests : BaseIntegrationTest
             description = "Test repair order for listing",
             mileage = 50000
         };
-        await Client.PostAsJsonAsync("/api/repair-orders", createRequest);
+        await Client.PostAsJsonAsync("/api/repairorders", createRequest);
 
         // Act
-        var response = await Client.GetAsync("/api/repair-orders");
+        var response = await Client.GetAsync("/api/repairorders");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -176,10 +176,10 @@ public class RepairOrderEndpointsTests : BaseIntegrationTest
             description = "Test repair order with status",
             mileage = 50000
         };
-        await Client.PostAsJsonAsync("/api/repair-orders", createRequest);
+        await Client.PostAsJsonAsync("/api/repairorders", createRequest);
 
         // Act - Filter by Draft status (new orders are created as Draft)
-        var response = await Client.GetAsync("/api/repair-orders?status=Draft");
+        var response = await Client.GetAsync("/api/repairorders?status=Draft");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

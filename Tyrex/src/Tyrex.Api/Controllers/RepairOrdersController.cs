@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tyrex.Application.Workshop.Commands.AddIntakePhotos;
 using Tyrex.Application.Workshop.Commands.CreateRepairOrder;
+using Tyrex.Application.Workshop.Queries.GetRepairOrderById;
 using Tyrex.Application.Workshop.Queries.GetRepairOrders;
 using Tyrex.Domain.Workshop;
 
@@ -38,6 +40,20 @@ public class RepairOrdersController : ControllerBase
         return Ok(result.Value);
     }
 
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetRepairOrderById(Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetRepairOrderByIdQuery(id);
+        var result = await _sender.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Code == "RepairOrder.NotFound" ? NotFound(result.Error) : BadRequest(result.Error);
+        }
+
+        return Ok(result.Value);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateRepairOrder([FromBody] CreateRepairOrderCommand command, CancellationToken cancellationToken)
     {
@@ -48,6 +64,20 @@ public class RepairOrdersController : ControllerBase
             return BadRequest(result.Error);
         }
 
-        return CreatedAtAction(nameof(GetRepairOrders), new { id = result.Value }, result.Value);
+        return CreatedAtAction(nameof(GetRepairOrderById), new { id = result.Value }, result.Value);
+    }
+
+    [HttpPost("{id:guid}/photos")]
+    public async Task<IActionResult> AddIntakePhotos(Guid id, [FromBody] List<string> photoUrls, CancellationToken cancellationToken)
+    {
+        var command = new AddIntakePhotosCommand(id, photoUrls);
+        var result = await _sender.Send(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Code == "RepairOrder.NotFound" ? NotFound(result.Error) : BadRequest(result.Error);
+        }
+
+        return Ok(new { message = "Photos added successfully" });
     }
 }

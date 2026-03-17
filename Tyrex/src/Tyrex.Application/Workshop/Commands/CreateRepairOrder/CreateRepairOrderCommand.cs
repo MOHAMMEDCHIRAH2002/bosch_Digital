@@ -7,4 +7,5 @@ public sealed record CreateRepairOrderCommand(
     Guid CustomerId,
     Guid VehicleId,
     RepairOrderType Type,
-    string VisitReason) : ICommand<Guid>;
+    string VisitReason,
+    int? IntakeMileage = null) : ICommand<Guid>;

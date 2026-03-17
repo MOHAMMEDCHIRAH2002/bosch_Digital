@@ -11,6 +11,7 @@ export const customersApi = {
     create: (data: any) => apiClient.post('/customers', data),
     getAll: (params?: { searchTerm?: string; page?: number; pageSize?: number }) =>
         apiClient.get('/customers', { params }),
+    getById: (id: string) => apiClient.get(`/customers/${id}`),
 };
 
 // --- Vehicles ---
@@ -18,19 +19,22 @@ export const vehiclesApi = {
     create: (data: any) => apiClient.post('/vehicles', data),
     getAll: (params?: { customerId?: string; searchTerm?: string; page?: number; pageSize?: number }) =>
         apiClient.get('/vehicles', { params }),
+    getById: (id: string) => apiClient.get(`/vehicles/${id}`),
 };
 
 // --- Repair Orders ---
 export const repairOrdersApi = {
-    create: (data: any) => apiClient.post('/repair-orders', data),
+    create: (data: any) => apiClient.post('/repairorders', data),
     getAll: (params?: { status?: string; searchTerm?: string; page?: number; pageSize?: number }) =>
-        apiClient.get('/repair-orders', { params }),
+        apiClient.get('/repairorders', { params }),
+    getById: (id: string) => apiClient.get(`/repairorders/${id}`),
+    addPhotos: (id: string, photoUrls: string[]) => apiClient.post(`/repairorders/${id}/photos`, photoUrls),
 };
 
 // --- Diagnostics ---
 export const diagnosticsApi = {
     submit: (repairOrderId: string, data: any) =>
-        apiClient.post(`/repair-orders/${repairOrderId}/diagnostics`, data),
+        apiClient.post(`/repairorders/${repairOrderId}/diagnostics`, data),
 };
 
 // --- Estimates ---
@@ -60,7 +64,27 @@ export const repairsApi = {
 // --- Quality ---
 export const qualityApi = {
     submitChecklist: (repairOrderId: string, data: any) =>
-        apiClient.post(`/repair-orders/${repairOrderId}/quality/submit`, data),
+        apiClient.post(`/repairorders/${repairOrderId}/quality/submit`, data),
+};
+
+// --- Files ---
+export const filesApi = {
+    upload: (file: File, folder?: string) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        return apiClient.post('/files/upload', formData, {
+            params: { folder },
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+    },
+    uploadMultiple: (files: File[], folder?: string) => {
+        const formData = new FormData();
+        files.forEach(file => formData.append('files', file));
+        return apiClient.post('/files/upload-multiple', formData, {
+            params: { folder },
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+    },
 };
 
 // --- Billing ---

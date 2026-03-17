@@ -48,7 +48,8 @@ internal sealed class CreateRepairOrderCommandHandler : ICommandHandler<CreateRe
             request.CustomerId,
             request.VehicleId,
             request.Type,
-            request.VisitReason);
+            request.VisitReason,
+            request.IntakeMileage);
 
         _repairOrderRepository.Add(repairOrder);
 

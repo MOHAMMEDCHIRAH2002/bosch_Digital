@@ -31,6 +31,8 @@ public class RepairOrderConfiguration : IEntityTypeConfiguration<RepairOrder>
             .IsRequired()
             .HasMaxLength(1000);
 
+        builder.Property(ro => ro.IntakeMileage);
+
         builder.Property(ro => ro.Status)
             .HasConversion<string>()
             .HasMaxLength(50);
